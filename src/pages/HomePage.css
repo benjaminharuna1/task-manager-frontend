@@ -1,0 +1,94 @@
+/* Custom Header */
+.custom-toolbar {
+    --background: #007aff;
+    --color: white;
+    font-weight: bold;
+  }
+  
+  /* Section title */
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: semibold;
+    margin-bottom: 1rem;
+    color: #1d2029;
+  }
+
+  /* Add task tool ba */
+  .add-toolbar{
+    --background: #273b66;
+    color: #ffffff
+  }
+
+  /* add task submit */
+.add-task-button{
+  --background: #273b66;
+  color: #ffffff;
+}
+
+/* close task button */
+.close-task{
+  --background: #273b66;
+  color: #ffffff
+}
+
+  /* Task Card */
+  .task-card {
+    border-radius: 10px;
+    padding: 10px;
+    transition: transform 0.2s ease-in-out;
+    cursor: pointer;
+    --background:#273b66;
+  }
+  
+  .task-card:hover {
+    transform: scale(1.02);
+  }
+  
+  /* Task Title */
+  .task-title {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  /* Task Status Labels */
+  .status-label {
+    font-size: 14px;
+    font-weight: bold;
+    padding: .5rem 1rem;
+    border-radius: .5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .status-label.pending {
+    background-color: #ffcc00;
+    color: #333;
+  }
+  
+  .status-label.completed {
+    background-color: #4CAF50;
+    color: white;
+  }
+
+  .status-label.inprogress {
+    background-color: #4b7eca;
+    color: white;
+  }
+  
+  /* Modal Title */
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #1d2029;
+  }
+  
+  /* Modal Description */
+  .modal-description {
+    font-size: 1rem;
+    margin-bottom: 20px;
+    margin-bottom: 1rem;
+    color: #1d2029;
+  }
+  

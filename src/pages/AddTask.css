@@ -1,0 +1,36 @@
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    --width: 100%;
+  }
+  
+  /* Input field styling */
+  .input-item {
+    width: 100%;
+    margin-bottom: 1rem;
+    --background: transparent; /* Ensure background is white */
+    --color: #1d2029;
+  }
+  
+  /* Custom input fields */
+  .custom-input {
+    --border-radius: 6px;
+    --placeholder-color: #999;
+  }
+  
+  /* Submit button styling */
+  .submit-button {
+    width: 100%;
+    --background: #007aff; /* Ionic primary color */
+    --color: white;
+    --border-radius: 1rem;
+    padding: 1rem;
+  }
+  
+  .submit-button:hover {
+    --background: #005ecb;
+  }
+  
