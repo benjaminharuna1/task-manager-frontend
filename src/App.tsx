@@ -1,14 +1,14 @@
 import React from 'react';
-import { IonApp, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import { IonApp, IonTabs, IonTabBar, IonTabButton, IonIcon, IonLabel, IonRouterOutlet, setupIonicReact, IonNavLink } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
+import axios from 'axios';
 
 import { Route, Redirect } from 'react-router';
 
-import { homeOutline,addOutline, personCircleOutline, lockClosedOutline, chatbubbleOutline, chatbubbleSharp, chatbubblesOutline, chatboxEllipsesOutline, logOutOutline } from 'ionicons/icons';
+import { homeOutline, chatboxEllipsesOutline, logOutOutline } from 'ionicons/icons';
 
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
-import SearchPage from './pages/SearchPage';
 import './pages/GlobalStyle.css';
 
 /* Core CSS required for Ionic components to work properly */
@@ -44,6 +44,19 @@ import Ai from './pages/Ai';
 
 setupIonicReact();
 
+const handleLogout = async () => {
+  try {
+      const response = await axios.get("http://localhost:4000/api/users/signout");
+      console.log("Logout response:", response.data);
+
+      // Redirect or refresh after logout (optional)
+      alert('Logout successful')
+      window.location.href = "/login"; // Change to your login route
+  } catch (error) {
+      console.error("Logout failed:", error.response?.data || error.message);
+  }
+};
+
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
@@ -58,7 +71,6 @@ const App: React.FC = () => (
           <Route path="/home" render={() => <HomePage />} exact={true} />
           <Route path="/chatbot" render={() => <Ai />} exact={true} />
           <Route path="/login" render={() => <LoginPage />} exact={true} />
-          <Route path="/search" render={() => <SearchPage />} exact={true} />
         </IonRouterOutlet>
 
         <IonTabBar slot="bottom">
@@ -76,8 +88,8 @@ const App: React.FC = () => (
             <IonIcon icon={lockClosedOutline} />
             <IonLabel>Login</IonLabel>
           </IonTabButton>
-
-          <IonTabButton tab="logout" href="/logout">
+            
+          <IonTabButton tab="logout" onClick={handleLogout}>
             <IonIcon icon={logOutOutline} />
             <IonLabel>Logout</IonLabel>
           </IonTabButton>
