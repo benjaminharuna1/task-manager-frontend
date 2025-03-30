@@ -24,24 +24,44 @@ import {
 import {addOutline, closeOutline, heart, pencilOutline, trashBin, trashBinOutline} from 'ionicons/icons';
 import axios from 'axios';
 import './HomePage.css';
+
+
 const HomePage = () => {
     const [selectedTask, setSelectedTask] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [showAddTask, setShowAddTask] = useState(false);
+    const [showLoginAlert, setShowLoginAlert] = useState(false);
     const [tasks, setTasks] = useState([])
-    // Get Tasks
-    useEffect(() => {
-        const fetchTasks = async () => {
-            try {
-                const response = await axios.get("http://localhost:4000/api/tasks");
-                setTasks(response.data);
-                // console.log(response.data);
-            } catch (error) {
-                console.error("Error fetching tasks:", error);
-            }
+    const [userid, setUserid] = useState()
+
+      // CHECK FOR AUTH
+      const checkuser = async () => {
+        try {
+            const response = await axios.get("http://localhost:4000/api/users/check");
+            setUserid(response.data.userid)
+          } catch (error) {
+            setShowLoginAlert(true)
+            console.error("User check failed:", error.response?.data || error.message);
+            window.location.href = "/login";  // Redirect only on error
         }
+    };
+    
+    // Get Tasks
+    const fetchTasks = async () => {
+      try {
+          const response = await axios.get("http://localhost:4000/api/tasks");
+          setTasks(response.data);
+          // console.log(response.data);
+        } catch (error) {
+            console.error("Error fetching tasks:", error);
+        }
+    }
+
+    useEffect(() => {
+        
         fetchTasks();
-      }, );
+        checkuser();
+      }, []);
       
       const openTaskModal = (task: any) => {
           setSelectedTask(task);
@@ -194,7 +214,9 @@ const HomePage = () => {
                     }>
                         <IonInput ref={hiddenInputRef}
                             type="text"
-                            value="gh51cnxUfmRJbaABsRJMWo7ZA0k2"/>
+                            value={userid} 
+                              />
+                            
                     </IonItem>
                     {/* Submit Button */}
                     <IonButton expand="block" className="add-task-button ion-padding"
@@ -229,6 +251,17 @@ const HomePage = () => {
                 }
                 header="Task deleted successfully!"
                 message="You have deleted a task successfully!"
+                buttons={
+                    ['OK']
+            }></IonAlert>
+
+            {/* PLEASE LOGIN ALERT */}
+            <IonAlert color='danger' isOpen={showLoginAlert}
+                onDidDismiss={
+                    () => setShowLoginAlert(false)
+                }
+                header="Invalid Login!"
+                message="Please Login to view tasks!"
                 buttons={
                     ['OK']
             }></IonAlert>

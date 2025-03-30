@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import { Route, Redirect } from 'react-router';
 
-import { homeOutline, chatboxEllipsesOutline, logOutOutline } from 'ionicons/icons';
+import { homeOutline, chatboxEllipsesOutline, logOutOutline, lockClosedOutline } from 'ionicons/icons';
 
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
@@ -41,6 +41,7 @@ import '@ionic/react/css/palettes/dark.system.css';
 /* Theme variables */
 import './theme/variables.css';
 import Ai from './pages/Ai';
+import ErrorBoundary from './ErrorBoundary';
 
 setupIonicReact();
 
@@ -68,7 +69,7 @@ const App: React.FC = () => (
 
           Use the component prop when your component depends on the RouterComponentProps passed in automatically.
         */}
-          <Route path="/home" render={() => <HomePage />} exact={true} />
+          <Route path="/home" render={() => <ErrorBoundary><HomePage /></ErrorBoundary>} exact={true} />
           <Route path="/chatbot" render={() => <Ai />} exact={true} />
           <Route path="/login" render={() => <LoginPage />} exact={true} />
         </IonRouterOutlet>
