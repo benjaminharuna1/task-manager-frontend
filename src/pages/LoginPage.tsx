@@ -38,7 +38,7 @@ const LoginPage = () => {
           
         } catch (error) {
           // setShowLoginAlert(true)
-          console.error("User check failed:", error.response?.data || error.message);
+          console.error("User check failed:", error);
       }
   };
   useEffect(() => {
@@ -64,7 +64,7 @@ const LoginPage = () => {
       })
   } catch (error) {
     // const errrr = console.error("Error creating user:", error.response.data.details);
-      alert(error.response.data.details);
+      alert("Error Logging in");
   }
   };
   
@@ -93,7 +93,7 @@ const LoginPage = () => {
         // setPassword('')
     } catch (error) {
       // const errrr = console.error("Error creating user:", error.response.data.details);
-        alert(error.response.data.details);
+      alert("Error Signing up");
     }
 
   }

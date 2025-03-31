@@ -22,7 +22,8 @@ import {
     IonSelectOption,
     IonSelect,
     IonLabel,
-    IonImg
+    IonImg,
+    IonSpinner
 } from
 '@ionic/react';
 import { Camera, CameraResultType } from '@capacitor/camera';
@@ -32,7 +33,7 @@ import './HomePage.css';
 
 
 const HomePage = () => {
-    const [selectedTask, setSelectedTask] = useState(null);
+    const [selectedTask, setSelectedTask] = useState<any>(null);
     const [showModal, setShowModal] = useState(false);
     const [showAddTask, setShowAddTask] = useState(false);
     const [showLoginAlert, setShowLoginAlert] = useState(false);
@@ -49,7 +50,7 @@ const HomePage = () => {
             setUseremail(response.data.useremail)
           } catch (error) {
             // setShowLoginAlert(true)
-            console.error("User check failed:", error.response?.data || error.message);
+            console.error("User check failed:", error)
             window.location.href = "/login";  // Redirect only on error
         }
     };
@@ -77,9 +78,11 @@ const HomePage = () => {
       try {
           const response = await axios.get("http://localhost:4000/api/tasks");
           setTasks(response.data);
+          setLoading(false)
           // console.log(response.data);
         } catch (error) {
             console.error("Error fetching tasks:", error);
+            setLoading(false)
         }
     }
     useEffect(() => {
@@ -97,7 +100,7 @@ const HomePage = () => {
       
       const hiddenTaskId = useRef < HTMLIonInputElement > (null); //Task ID
       // FOR DELETE TASK
-      const deleteTask = async (e) => {
+      const deleteTask = async () => {
             const taskid = hiddenTaskId.current ?. value;
             // console.log(taskid);
             try {
@@ -122,9 +125,11 @@ const HomePage = () => {
     const [showAlert, setShowAlert] = useState(false);
     const [showSuccessfulAlert, setShowSuccessfulAlert] = useState(false);
     const [showDeleteAlert, setShowDeleteAlert] = useState(false);
-    const [updatedStatus, setUpdatedStatus] = useState(selectedTask?.status || "");
+    const [updatedStatus, setUpdatedStatus] = useState<string>((selectedTask as any)?.status || "");
+    const [loading, setLoading] = useState(true);
 
-    const addTask = async (e) => {
+
+    const addTask = async () => {
         if (!title || !description) {
             setShowAlert(true);
             return
@@ -159,7 +164,7 @@ const HomePage = () => {
     // UPDATE TASK STATUS
     const updateTaskStatus = async () => {
       if (!selectedTask) return;
-      
+      const selectedTaskIDD = selectedTask.id
       try {
         await axios.put(`http://localhost:4000/api/tasks/${selectedTask.id}`, {
           status: updatedStatus,
@@ -169,7 +174,7 @@ const HomePage = () => {
         setTasksUpdated(prev => !prev);
         setShowModal(false);
       } catch (error) {
-        console.error("Error updating task:", error.response?.data || error.message);
+        console.error("Error updating task");
       }
     };
      
@@ -197,21 +202,26 @@ const HomePage = () => {
               display: 'flex',
               justifyContent: 'center'
             }}>
-              🚀 Welcome to Task Manager! 🚀
+              📋 Welcome to Task Manager 📋
             </h1>
 
             {/* Task Cards */}
-            {
-            tasks.map((task) => (<IonCard key={
+            {loading ? (
+              <div style={{ textAlign: 'center', color:'#ffffff', marginTop: '40px' }}>
+                <IonSpinner name="crescent" color='primary' />
+                <p style={{
+                  color: '#2866b6'
+                }}>Loading Tasks...</p>
+              </div>
+            ) : (
+            tasks.map((task: any) => (<IonCard key={
                     task.id
                 }
                 className="task-card"
                 onClick={() => openTaskModal(task)
             }>
                 <IonCardHeader>
-                    <IonCardTitle className="task-title"> {
-                        task.title
-                    } </IonCardTitle>
+                    <IonCardTitle className="task-title"> {task.title} </IonCardTitle>
                 </IonCardHeader>
                 <IonCardContent>
                     <span className={
@@ -222,7 +232,7 @@ const HomePage = () => {
                         task.status
                     }</span>
                 </IonCardContent>
-            </IonCard>))
+            </IonCard>)))
         }
             {/* Floating Add Task Button */}
             <IonFab vertical="bottom" horizontal="end" slot="fixed">
@@ -335,7 +345,8 @@ const HomePage = () => {
                 onDidDismiss={
                     () => setShowModal(false)
             }>
-                <IonContent className="ion-padding"> {
+                <IonContent className="ion-padding"> 
+                  {
                     selectedTask && (<>
                         <h2 className="modal-title" style={{
                           display: 'flex',

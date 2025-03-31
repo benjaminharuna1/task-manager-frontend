@@ -41,7 +41,6 @@ import '@ionic/react/css/palettes/dark.system.css';
 /* Theme variables */
 import './theme/variables.css';
 import Ai from './pages/Ai';
-import ErrorBoundary from './ErrorBoundary';
 
 setupIonicReact();
 
@@ -54,7 +53,8 @@ const handleLogout = async () => {
       alert('Logout successful')
       window.location.href = "/login"; // Change to your login route
   } catch (error) {
-      console.error("Logout failed:", error.response?.data || error.message);
+    console.error("Logout failed:", (error as Error).message);
+
   }
 };
 
@@ -69,9 +69,9 @@ const App: React.FC = () => (
 
           Use the component prop when your component depends on the RouterComponentProps passed in automatically.
         */}
-          <Route path="/home" render={() => <ErrorBoundary><HomePage /></ErrorBoundary>} exact={true} />
+          <Route path="/home" render={() => <HomePage />} exact={true} />
           <Route path="/chatbot" render={() => <Ai />} exact={true} />
-          <Route path="/login" render={() => <ErrorBoundary><LoginPage /></ErrorBoundary>} exact={true} />
+          <Route path="/login" render={() => <LoginPage />} exact={true} />
 
         </IonRouterOutlet>
 
@@ -84,11 +84,6 @@ const App: React.FC = () => (
           <IonTabButton tab="chatbot" href="/chatbot">
             <IonIcon icon={chatboxEllipsesOutline} />
             <IonLabel>ChatBot</IonLabel>
-          </IonTabButton>
-
-          <IonTabButton tab="login" href="/login">
-            <IonIcon icon={lockClosedOutline} />
-            <IonLabel>Login</IonLabel>
           </IonTabButton>
             
           <IonTabButton tab="logout" onClick={handleLogout}>
