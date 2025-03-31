@@ -21,9 +21,11 @@ import {
     IonTextarea,
     IonSelectOption,
     IonSelect,
-    IonLabel
+    IonLabel,
+    IonImg
 } from
 '@ionic/react';
+import { Camera, CameraResultType } from '@capacitor/camera';
 import {addOutline, closeOutline, heart, pencilOutline, trashBin, trashBinOutline} from 'ionicons/icons';
 import axios from 'axios';
 import './HomePage.css';
@@ -51,6 +53,24 @@ const HomePage = () => {
             window.location.href = "/login";  // Redirect only on error
         }
     };
+
+
+    // CAMERA CAPTURE
+      const [photo, setPhoto] = useState<string | null>(null);
+    
+      const takePicture = async () => {
+        try {
+          const photo = await Camera.getPhoto({
+            quality: 90,
+            allowEditing: false,
+            resultType: CameraResultType.Uri,
+          });
+          setPhoto(photo.dataUrl!);
+          console.log(photo.webPath);
+        } catch (error) { 
+          console.log('Camera error:', error);
+        }
+      };
     
 
     const fetchTasks = async () => {
@@ -168,9 +188,18 @@ const HomePage = () => {
     </IonHeader> */}
         {/* Content */}
         <IonContent className="ion-padding">
-            <h2 className="section-title">Welcome, 
-                <small>{useremail}</small>
-            </h2>
+            <h1 style={{
+              fontSize: '1.5rem',
+              fontWeight: 'bold',
+              marginBottom: '1rem',
+              color: '#007AFF',
+              textShadow: '2px 2px 4px rgba(0, 0, 0, 0.2)',
+              display: 'flex',
+              justifyContent: 'center'
+            }}>
+              🚀 Welcome to Task Manager! 🚀
+            </h1>
+
             {/* Task Cards */}
             {
             tasks.map((task) => (<IonCard key={
@@ -236,6 +265,13 @@ const HomePage = () => {
                             }
                             className="custom-input"></IonTextarea>
                     </IonItem>
+                    <IonButton expand="block" shape='round' color='medium' className='ion-padding' onClick={takePicture}>
+                        Upload Image
+                      </IonButton>
+              
+                      {photo && (
+                        <IonImg src={photo} style={{ marginTop: '20px', borderRadius: '12px' }} />
+                      )}
                     <IonItem className="input-item"
                         style={
                             {display: "none"}
