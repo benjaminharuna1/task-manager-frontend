@@ -169,8 +169,7 @@ const HomePage = () => {
         {/* Content */}
         <IonContent className="ion-padding">
             <h2 className="section-title">Welcome, 
-                <small>
-                    {useremail}</small>
+                <small>{useremail}</small>
             </h2>
             {/* Task Cards */}
             {
