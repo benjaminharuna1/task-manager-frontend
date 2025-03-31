@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   IonPage,
   IonContent,
@@ -29,6 +29,22 @@ const LoginPage = () => {
   // const auth = getAuth();
   const history = useHistory();
 
+    // CHECK FOR AUTH
+    const checkuser = async () => {
+      try {
+          const response = await axios.get("http://localhost:4000/api/users/check").then(() => {
+          window.location.href = "/home";  // Redirect only on error
+          })
+          
+        } catch (error) {
+          // setShowLoginAlert(true)
+          console.error("User check failed:", error.response?.data || error.message);
+      }
+  };
+  useEffect(() => {
+          checkuser();
+        }, []);
+  
   // SIGNIN USERS
   const handleLogin = async () => {
 

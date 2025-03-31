@@ -40,7 +40,7 @@ const HomePage = () => {
             const response = await axios.get("http://localhost:4000/api/users/check");
             setUserid(response.data.userid)
           } catch (error) {
-            setShowLoginAlert(true)
+            // setShowLoginAlert(true)
             console.error("User check failed:", error.response?.data || error.message);
             window.location.href = "/login";  // Redirect only on error
         }

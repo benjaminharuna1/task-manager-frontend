@@ -71,7 +71,8 @@ const App: React.FC = () => (
         */}
           <Route path="/home" render={() => <ErrorBoundary><HomePage /></ErrorBoundary>} exact={true} />
           <Route path="/chatbot" render={() => <Ai />} exact={true} />
-          <Route path="/login" render={() => <LoginPage />} exact={true} />
+          <Route path="/login" render={() => <ErrorBoundary><LoginPage /></ErrorBoundary>} exact={true} />
+
         </IonRouterOutlet>
 
         <IonTabBar slot="bottom">
