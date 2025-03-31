@@ -46,7 +46,7 @@ setupIonicReact();
 
 const handleLogout = async () => {
   try {
-      const response = await axios.get("http://localhost:4000/api/users/signout");
+      const response = await axios.get("https://task-manager-xwav.onrender.com/api/users/signout");
       console.log("Logout response:", response.data);
 
       // Redirect or refresh after logout (optional)

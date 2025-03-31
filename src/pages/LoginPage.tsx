@@ -32,7 +32,7 @@ const LoginPage = () => {
     // CHECK FOR AUTH
     const checkuser = async () => {
       try {
-          const response = await axios.get("http://localhost:4000/api/users/check").then(() => {
+          const response = await axios.get("https://task-manager-xwav.onrender.com/api/users/check").then(() => {
           window.location.href = "/home";  // Redirect only on error
           })
           
@@ -53,7 +53,7 @@ const LoginPage = () => {
   }
   try {
       console.log("Sending data:", body); // Debugging
-      const response = await axios.post("http://localhost:4000/api/users/signin", body, {
+      const response = await axios.post("https://task-manager-xwav.onrender.com/api/users/signin", body, {
           headers: {
               "Content-Type": "application/json"
           }
@@ -77,7 +77,7 @@ const LoginPage = () => {
     }
     try {
         console.log("Sending data:", body); // Debugging
-        const response = await axios.post("http://localhost:4000/api/users/create", body, {
+        const response = await axios.post("https://task-manager-xwav.onrender.com/api/users/create", body, {
             headers: {
                 "Content-Type": "application/json"
             }

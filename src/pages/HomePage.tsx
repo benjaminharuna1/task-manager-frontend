@@ -45,7 +45,7 @@ const HomePage = () => {
       // CHECK FOR AUTH
       const checkuser = async () => {
         try {
-            const response = await axios.get("https://task-manager-backend-adhs.vercel.app/users/check");
+            const response = await axios.get("https://task-manager-xwav.onrender.com/api/users/check");
             setUserid(response.data.userid)
             setUseremail(response.data.useremail)
           } catch (error) {
@@ -76,7 +76,7 @@ const HomePage = () => {
 
     const fetchTasks = async () => {
       try {
-          const response = await axios.get("http://localhost:4000/api/tasks");
+          const response = await axios.get("https://task-manager-xwav.onrender.com/api/tasks");
           setTasks(response.data);
           setLoading(false)
           // console.log(response.data);
@@ -106,7 +106,7 @@ const HomePage = () => {
             try {
                 const taskid = hiddenTaskId.current ?. value;
                 console.log("Sending ID:", taskid); // Debugging
-                const response = await axios.delete(`http://localhost:4000/api/tasks/${taskid}`);
+                const response = await axios.delete(`https://task-manager-xwav.onrender.com/api/tasks/${taskid}`);
                 // console.log("Task deleted successfully:", response.data);
                 setShowModal(false)
                 setShowDeleteAlert(true)
@@ -142,7 +142,7 @@ const HomePage = () => {
             }
             try {
                 console.log("Sending data:", body); // Debugging
-                const response = await axios.post("http://localhost:4000/api/tasks", body, {
+                const response = await axios.post("https://task-manager-xwav.onrender.com/api/tasks", body, {
                     headers: {
                         "Content-Type": "application/json"
                     }
@@ -166,7 +166,7 @@ const HomePage = () => {
       if (!selectedTask) return;
       const selectedTaskIDD = selectedTask.id
       try {
-        await axios.put(`http://localhost:4000/api/tasks/${selectedTask.id}`, {
+        await axios.put(`https://task-manager-xwav.onrender.com/api/tasks/${selectedTask.id}`, {
           status: updatedStatus,
         });
     
