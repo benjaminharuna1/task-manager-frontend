@@ -45,7 +45,7 @@ const HomePage = () => {
       // CHECK FOR AUTH
       const checkuser = async () => {
         try {
-            const response = await axios.get("http://localhost:4000/api/users/check");
+            const response = await axios.get("https://task-manager-backend-adhs.vercel.app/users/check");
             setUserid(response.data.userid)
             setUseremail(response.data.useremail)
           } catch (error) {
