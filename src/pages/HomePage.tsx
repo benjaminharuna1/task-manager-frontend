@@ -18,7 +18,10 @@ import {
     IonAlert,
     IonInput,
     IonItem,
-    IonTextarea
+    IonTextarea,
+    IonSelectOption,
+    IonSelect,
+    IonLabel
 } from
 '@ionic/react';
 import {addOutline, closeOutline, heart, pencilOutline, trashBin, trashBinOutline} from 'ionicons/icons';
@@ -31,14 +34,17 @@ const HomePage = () => {
     const [showModal, setShowModal] = useState(false);
     const [showAddTask, setShowAddTask] = useState(false);
     const [showLoginAlert, setShowLoginAlert] = useState(false);
-    const [tasks, setTasks] = useState([])
-    const [userid, setUserid] = useState()
+    const [tasks, setTasks] = useState([]);
+    const [tasksUpdated, setTasksUpdated] = useState(false);
+    const [userid, setUserid] = useState();
+    const [useremail, setUseremail] = useState();
 
       // CHECK FOR AUTH
       const checkuser = async () => {
         try {
             const response = await axios.get("http://localhost:4000/api/users/check");
             setUserid(response.data.userid)
+            setUseremail(response.data.useremail)
           } catch (error) {
             // setShowLoginAlert(true)
             console.error("User check failed:", error.response?.data || error.message);
@@ -46,7 +52,7 @@ const HomePage = () => {
         }
     };
     
-    // Get Tasks
+
     const fetchTasks = async () => {
       try {
           const response = await axios.get("http://localhost:4000/api/tasks");
@@ -56,12 +62,11 @@ const HomePage = () => {
             console.error("Error fetching tasks:", error);
         }
     }
-
     useEffect(() => {
-        
+        // Get Tasks
         fetchTasks();
         checkuser();
-      }, []);
+      }, [tasksUpdated]);
       
       const openTaskModal = (task: any) => {
           setSelectedTask(task);
@@ -82,6 +87,7 @@ const HomePage = () => {
                 // console.log("Task deleted successfully:", response.data);
                 setShowModal(false)
                 setShowDeleteAlert(true)
+                setTasksUpdated(prev => !prev);
             } catch (error) {
                 console.error("Error deleting task:", error);
                 console.log("Error deleting task:", taskid);
@@ -96,6 +102,8 @@ const HomePage = () => {
     const [showAlert, setShowAlert] = useState(false);
     const [showSuccessfulAlert, setShowSuccessfulAlert] = useState(false);
     const [showDeleteAlert, setShowDeleteAlert] = useState(false);
+    const [updatedStatus, setUpdatedStatus] = useState(selectedTask?.status || "");
+
     const addTask = async (e) => {
         if (!title || !description) {
             setShowAlert(true);
@@ -116,6 +124,7 @@ const HomePage = () => {
                 }).then((response) => {
                     setShowAddTask(false)
                     setShowSuccessfulAlert(true)
+                    setTasksUpdated(prev => !prev);
                 })
                 // console.log("Task added:", response.data)
                 setShowAddTask(false)
@@ -126,6 +135,26 @@ const HomePage = () => {
             }
         }
     };
+
+    // UPDATE TASK STATUS
+    const updateTaskStatus = async () => {
+      if (!selectedTask) return;
+      
+      try {
+        await axios.put(`http://localhost:4000/api/tasks/${selectedTask.id}`, {
+          status: updatedStatus,
+        });
+    
+        alert("Task status updated successfully!");
+        setTasksUpdated(prev => !prev);
+        setShowModal(false);
+      } catch (error) {
+        console.error("Error updating task:", error.response?.data || error.message);
+      }
+    };
+     
+
+
     return (<IonPage> {/* Header
     <IonHeader>
       <IonToolbar className="custom-toolbar">
@@ -139,9 +168,9 @@ const HomePage = () => {
     </IonHeader> */}
         {/* Content */}
         <IonContent className="ion-padding">
-            <h2 className="section-title">Welcome,
+            <h2 className="section-title">Welcome, 
                 <small>
-                    Innocent</small>
+                    {useremail}</small>
             </h2>
             {/* Task Cards */}
             {
@@ -292,25 +321,33 @@ const HomePage = () => {
                         <p className="modal-description"> {
                             selectedTask.description
                         }</p>
-                        <span style={{
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                        }}>
-                          <span className={
-                              `status-label ${
-                                  selectedTask.status.toLowerCase()
-                              }`
-                          }> {
-                              selectedTask.status
-                          } </span> 
+                        <span >
 
-                          <span  style={{
+                          <IonItem color='dark'>
+                            <IonLabel>{selectedTask.status}  </IonLabel>
+                            <IonSelect
+                              value={updatedStatus}
+                              onIonChange={(e) => setUpdatedStatus(e.detail.value)}
+                            >
+                              <IonSelectOption value="Pending">Pending</IonSelectOption>
+                              <IonSelectOption value="InProgress">InProgress</IonSelectOption>
+                              <IonSelectOption value="Completed">Completed</IonSelectOption>
+                            </IonSelect>
+                            <IonButton shape="round" className='' color="light" onClick={updateTaskStatus}>
+                              <IonIcon slot="start" icon={pencilOutline}></IonIcon>
+                              Update Status
+                            </IonButton>
+
+                          </IonItem>
+ 
+
+                          <span className='ion-padding'  style={{
                             display: 'flex',
-                            justifyContent: 'space-between',
+                            justifyContent: 'center',
                             alignItems: 'center',
                             gap: '1rem'
                           }}>
+                            
                             <IonItem className="input-item"
                                 style={
                                     {display: "none"}}>
@@ -318,10 +355,6 @@ const HomePage = () => {
                                     type="text"
                                     value={ selectedTask.id }  />
                             </IonItem>
-                            <IonButton shape='round' color='dark'>
-                              <IonIcon slot="start" icon={pencilOutline}></IonIcon>
-                              Edit
-                            </IonButton>
                             <IonButton color={'danger'} shape="round" onClick={deleteTask}>
                               <IonIcon slot="start" icon={trashBinOutline}></IonIcon>
                               Delete

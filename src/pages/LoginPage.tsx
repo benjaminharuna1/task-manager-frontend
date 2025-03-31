@@ -47,7 +47,25 @@ const LoginPage = () => {
   
   // SIGNIN USERS
   const handleLogin = async () => {
-
+    const body = {
+      "email": email,
+      "password": password,
+  }
+  try {
+      console.log("Sending data:", body); // Debugging
+      const response = await axios.post("http://localhost:4000/api/users/signin", body, {
+          headers: {
+              "Content-Type": "application/json"
+          }
+      }).then((response) => {
+          setEmail('')
+          setPassword('')
+          history.push('/home');
+      })
+  } catch (error) {
+    // const errrr = console.error("Error creating user:", error.response.data.details);
+      alert(error.response.data.details);
+  }
   };
   
   // SIGNUP USERS
