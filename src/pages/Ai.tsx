@@ -10,7 +10,7 @@ function Ai() {
 
     const fetchData = async () => {
         try {
-            const response = await axios.post('http://localhost:4000https://task-manager-xwav.onrender.com/chat', { content: input });
+            const response = await axios.post('https://task-manager-xwav.onrender.com/chat', { content: input });
             const data = response.data.candidates[0].content.parts[0].text;
             setList((prev) => [...prev, { role: 'bot', content: data }]);
         } catch (error) {
