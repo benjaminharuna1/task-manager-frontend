@@ -3,6 +3,11 @@
 ## Overview
 The **Smart Task Management App** is a feature-rich task management application built using **Ionic React**. This frontend connects to a backend powered by Firebase Functions and MongoDB, providing a seamless and interactive task management experience.
 
+## Backend Repo
+https://github.com/benjaminharuna1/task-manager-backend
+
+
+
 ## Features
 
 ### Authentication
@@ -82,5 +87,5 @@ Developed with ❤️ using **Ionic React** 🚀
 
 
 Authors
-Innocent Matur https://github.com/bwesun (Team Lead)
-BenJamin Haruna Bala https://github.com/benjaminharuna1/
+# - Innocent Matur https://github.com/bwesun (Team Lead)
+# - BenJamin Haruna Bala https://github.com/benjaminharuna1/
